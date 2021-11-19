@@ -1,0 +1,100 @@
+Websockets and sockets.io
+
+- Typically how we have done so for is client requests for data and we send the data. Fot this, we used http protocol. 
+- How about if we have to send some data without the clinet requesting it
+- lets say if we want to send some notifications
+- or if user A and user B are chatting and user A has send some data that the user B doesn't know about so user B can not request
+ but still we would be sending that data to user B with him requesting for it
+- To achieve this, we use websockets. Websockets is a protocol established via http only
+
+- if we google 'node websockets' or 'node express websockets', we get a lot of packages and one such common pkg is 
+ socket.io
+- socket.io is a package that uses websockets and gives us various convenient features around that protocol
+
+Useful link: https://socket.io/docs/v4/
+
+install socker io pkg : npm install --save socket.io
+
+This needs to be installed on client side as well : npm install --save socket.io-client
+
+------------------------------------------------------------------------------------------------------------------
+
+Now on the server side, we set up a connection:
+    const server = app.listen(8080);
+    const io = require('socket.io')(server); 
+    //socket io is built on websockets protocol which is built up on http so we passes server as an argument which is a http server
+    //and we get couple of event listeners, one is to wait for new connections so whenever a client gets connected, everytime this gets fired
+    io.on('connection', socket => {
+        console.log('Client conneted!');
+    })
+
+and on the client side, we give the url to this connection:
+- we import this first: import openSocket from 'socket.io-client';
+- and then connect to the server where this socket.io is implemented: openSocket('http://localhost:8080');
+
+- for some reason the default transportation method is not always allowed by all servers. 
+- So specify a neutral transportation method at the client side, like this: { transports : ['websocket'] }
+
+openSocket('http://localhost:8080', { transports : ['websocket'] });
+
+-------------------------------------------------------------------------------------------------------------------
+
+- now when any new item is added, we want to send it to all users. for this, we can use socket.io
+
+now to access the socket connection in all files, we can add it in another file and add methods to it:
+
+let io;
+module.exports = {
+    init: httpServer => {
+        io = require('socket.io')(httpServer);
+        return io;
+    },
+    getIO: () => {
+        if(!io){
+            throw new Error('Socket.io is not initialized!');
+        }
+        return io;
+    }
+}
+
+And now we need to send data: 
+- for this, we have two methods: emit() and broadcast()
+- emit() is used to send to all connected users
+- and broadcast() is used to send to all connected users except the one from which this request was sent that is who is creating it
+
+and inside this method, we can send anything anything we want, any message, data, notification anything
+- for this, we can define an event of any name and then object of any paramter that will be used by client
+
+const io = require('../socket');
+io.getIO().emit('postCreatedEvent', {action: 'create', post: post});
+
+and now on the client side, can call this event on compoent mount
+
+const socket = openSocket('http://localhost:8080', { transports : ['websocket'] });
+    socket.on('postCreatedEvent', data=> {
+      if(data.action == 'create'){
+        this.addPost(data.post);
+      }
+    })
+
+-----------------------------------------------------------------------------------------------------------------
+
+Wrap up: 
+
+So using socketio, we can push information from server to client through emit, broadcast method
+and socket io is not the only way
+it uses websockets only and that is the key to push information
+and socket io is just a popular package to do the same 
+
+and websockets is built up on http, it is a handshake so we need a running http server to establish a websocket connection
+and both run simultaneously
+
+Useful resources:
+
+Socket.io Official Docs: https://socket.io/get-started/chat/
+
+Alternative Websocket Library: https://www.npmjs.com/package/express-ws
+
+
+
+
