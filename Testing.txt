@@ -1,0 +1,17 @@
+We will be using Mocha, Chai for Testing
+Docs: 
+https://mochajs.org/
+https://www.chaijs.com/
+
+install in application:
+npm install --save-dev mocha chai
+
+to run test, add command in package.json file
+There we see 'test' command in scripts, give it value 'mocha'
+
+and now run in terminal type 'npm test'. It will run all the test cases written
+
+To write test case, Mocha looks for folder named 'test'. It has to be test only and inside this, we can create javascript files 
+of any name
+
+Now Mocha is responsible for running our tests and giving us 'it' function, chai is responsible for defining our success conditions
