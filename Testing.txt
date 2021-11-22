@@ -75,5 +75,10 @@ To test Async code:
 -without done, code will be executed synchronously and will not wait for the 'then' code to execute and will always pass the testcase
 which is the false scenario as it never executed those scenarios written inside then block
 
+2. We can have a separate testing database
+Downsignt of it is.. test will take a little longer to run 
+but the upsight is we will have a more realistic testing as we will have a database. 
+Also it will be little easier to write testcases and test as will not have to stub database data everytime
 
-
+To set this up: can use the same code that we wrote in app.js to create a database. Just with the different database name
+that is super important cz we dont want to manipulate the real database
