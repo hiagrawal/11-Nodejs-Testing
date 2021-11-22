@@ -2,6 +2,7 @@ We will be using Mocha, Chai for Testing
 Docs: 
 https://mochajs.org/
 https://www.chaijs.com/
+https://www.chaijs.com/api/bdd/
 
 install in application:
 npm install --save-dev mocha chai
@@ -14,4 +15,7 @@ and now run in terminal type 'npm test'. It will run all the test cases written
 To write test case, Mocha looks for folder named 'test'. It has to be test only and inside this, we can create javascript files 
 of any name
 
-Now Mocha is responsible for running our tests and giving us 'it' function, chai is responsible for defining our success conditions
+Now Mocha is responsible for running our tests and giving us 'it' function, 
+chai is responsible for defining our success conditions that is expect funtion we get from chai
+
+describe() is used to group test cases and we can have multiple describe nested in one another
