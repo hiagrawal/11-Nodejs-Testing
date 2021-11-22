@@ -27,3 +27,33 @@ we just have to test our functionality, our logic
 so in auth middleware, we are not supposed to test jwt verify method as it is jwt method and logic
 what we should test is.. if verify method returns success or failure and if our code works correctly
 that if decodedToken is not there then it should throw error and if it is there then it should have userid
+
+Using Stubs:
+to mock a function in our test case, to test one scenario wherein we get userId from verify method, 
+we can replace the original verify method with the one in our test case. so whenevr it exceutes the authMiddleware, 
+it takes the verify method what we have defined in our test case
+
+the down sight of this is.. it replaces verify method globally so if we have scenario where we want to execute the
+actual verify method defined in middleware in any test case written after this test case 
+(that is after it has done replacing, test cases written before this test case would not be impacted), 
+we will never be able to get acutal verify method and to fix this we can use third party pkgs to mock a function
+
+that package is 'sinon'
+
+npm install --save-dev sinon
+sinon is a package that allows to stub/mock the original function and restore the original function as and when needed
+
+we use sinon.stub method and pass the object/paramter that has to stub as first argumnet and then it's method as second argument
+this returns an empty object, we can leave it as it is or set it to any value using 'returns' method provided by sinon on teh method called
+we can also check if this jwt verify method has been called in actual auth middlware by using 'called' property
+and then restore as well using 'restore' method
+
+        sinon.stub(jwt, 'verify');
+        jwt.verify.returns({userId: 'abc'});
+        authMiddleware(req, {}, () => {});
+        expect(jwt.verify.called).to.be.true;
+        expect(req).to.have.property('userId');
+        expect(req).to.have.property('userId', 'abc');
+        jwt.verify.restore();
+
+
