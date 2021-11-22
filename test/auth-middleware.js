@@ -28,7 +28,7 @@ describe('Auth Middleware', function(){
         expect(authMiddleware.bind(this, req, {}, () => {})).to.throw();
     });   
     
-    it('should throw an error if the token can not be verfied', function(){
+    it('should throw an error if the token can not be verfied - when using no stubbed method', function(){
         const req = {
             get: function(){
                 return 'Bearer xyz';
@@ -37,7 +37,7 @@ describe('Auth Middleware', function(){
        
         expect(authMiddleware.bind(this, req, {}, () => {})).to.throw();
     });   
-    it('should yield a userId after decoding the token', function(){
+    it('should yield a userId after decoding the token - when using manual stubbing', function(){
         const req = {
             get: function(){
                 return 'Bearer ghghwytdghvchs';
@@ -61,7 +61,7 @@ describe('Auth Middleware', function(){
      
     //this now test case will fail bcz we are expecting verify method to not succeed and return decodedToken undefined which will throw an error
     //but since we have replaced verify method in above test case, the same will executed here and will have userId
-    it('should throw an error if the token can not be verfied', function(){
+    it('should throw an error if the token can not be verfied- actually fails since stubbed the actual method', function(){
         const req = {
             get: function(){
                 return 'Bearer xyz';
@@ -73,7 +73,7 @@ describe('Auth Middleware', function(){
     });  
 
     //using the correct way of stubbing wherein we can restore as well once done
-    it('should yield a userId after decoding the token', function(){
+    it('should yield a userId after decoding the token - when stubbed uisng sinon', function(){
         const req = {
             get: function(){
                 return 'Bearer ghghwytdghvchs';

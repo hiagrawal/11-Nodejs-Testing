@@ -67,5 +67,13 @@ Now to test controller logic, we need to have logic of database
 and to test that, we have two approaches:
 1. we mock the database method and its return value using sinon stub that we did earlier
 
+To test Async code:
+-First we will write the return statements in our login method so when we call it asynchronously, it returns us the result of that call
+-Now to call the method in testing file asynchronously, we need to use 'done' paramter provided by mocha
+'done' detects the asynchronous code and wait for it execution. Although it detects on its own, but we cant rely on it completely and 
+-should explicity also call done() method where there is asynchronous code 
+-without done, code will be executed synchronously and will not wait for the 'then' code to execute and will always pass the testcase
+which is the false scenario as it never executed those scenarios written inside then block
+
 
 
