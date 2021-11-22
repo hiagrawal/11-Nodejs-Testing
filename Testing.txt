@@ -56,4 +56,16 @@ and then restore as well using 'restore' method
         expect(req).to.have.property('userId', 'abc');
         jwt.verify.restore();
 
+Now what to test next
+To understand, we are doing unit testing wherein we are supposed to test our code, our logic defined by us
+we are not supposed to test other pkgs methods as well as other integration logic like when we are giving some url/API,
+it is getting redirected to the controller method or not. that will be integration testing and hence we woul not testing it
+so we will not test routes files
+
+what is need to test is our controller logic
+Now to test controller logic, we need to have logic of database
+and to test that, we have two approaches:
+1. we mock the database method and its return value using sinon stub that we did earlier
+
+
 

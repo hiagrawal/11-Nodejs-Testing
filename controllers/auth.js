@@ -37,25 +37,24 @@ exports.signUp = (req,res, next) => {
     })
 };
 
-exports.login = (req, res, next) => {
+exports.login = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     let loadedUser;
-    User.findOne({email: email}).then(userDoc => {
-        if(!userDoc){
-            const error = new Error('Email Not found');
-            error.statusCode = 401; //401 refers to authentication error
-            throw error;
-        }
-        loadedUser = userDoc;
-        return bcrypt.compare(password, userDoc.password)
-    })
-    .then(isEqual => {
-        if(!isEqual){
-            const error = new Error('Password is not correct');
-            error.statusCode = 401; //401 refers to authentication error
-            throw error;
-        }
+    try{
+    const user = await User.findOne({email: email});
+    if(!user){
+        const error = new Error('Email Not found');
+        error.statusCode = 401; //401 refers to authentication error
+        throw error;
+    }
+    loadedUser = user;
+    const isEqual = await bcrypt.compare(password, user.password)
+    if(!isEqual){
+        const error = new Error('Password is not correct');
+        error.statusCode = 401; //401 refers to authentication error
+        throw error;
+    }
     //sign method is used to generate the json token signature. It takes first argument as some data so that it uses the data 
     //to generate the token so if data changes, token also changes so it becomes more secure
     //make a note that this data is exposed to the client and stored in client's browser so some sensitive information should not be passed there
@@ -73,13 +72,13 @@ exports.login = (req, res, next) => {
 
     res.status(200).json({token: token, userId: loadedUser._id.toString()})
 
-    })
-    .catch(err => {
+    }
+    catch(err){
         if(!err.statusCode){
             err.statusCode = 500;
         }
         next(err);
-    })
+    }
 };
 
 exports.getStatus = (req, res, next) => {
