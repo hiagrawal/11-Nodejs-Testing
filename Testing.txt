@@ -124,3 +124,11 @@ these hooks can be aywhere inside describe method, their position does not matte
 can be before or after the 'it' function declaration
 
 advantage of this is.. even if any test case fails, after will be run and clear the database and disconnect it
+
+Useful Resources:
+
+Mocha: https://mochajs.org/
+
+Chai: https://www.chaijs.com/
+
+Sinon: https://sinonjs.org/
