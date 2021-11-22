@@ -81,22 +81,23 @@ exports.login = async (req, res, next) => {
     }    
 };
 
-exports.getStatus = (req, res, next) => {
+exports.getStatus = async (req, res, next) => {
     const userId = req.userId;
-    User.findById(userId).then(user => {
+    try{
+        const user = await User.findById(userId);
         if(!user){
             const error = new Error('Not able to find Logged In User');
             error.statusCode = 404;
             throw error;
         }
         res.status(200).json({status: user.status});
-    })
-    .catch(err => {
+    }
+    catch(err){
         if(!err.statusCode){
             err.statusCode = 500;
         }
         next(err);
-    })
+    }
 };
 
 exports.updateStatus = (req, res, next) => {

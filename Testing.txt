@@ -82,3 +82,19 @@ Also it will be little easier to write testcases and test as will not have to st
 
 To set this up: can use the same code that we wrote in app.js to create a database. Just with the different database name
 that is super important cz we dont want to manipulate the real database
+
+since we are using real database here, so time to run the testcase might increase. default it is 2s which is 2000
+we can change it in package.json file to 5s which is 5000
+"test": "mocha --timeout 5000"
+
+- Keep in mind.. we are able to use 'then' on calling method coz async await by default returns a promise.
+AuthController.getStatus(req, res, () => {}).then
+
+- if we would have used promises for asynchronous calling instead of async await then we would not be able to use 'then'
+
+- one thing is, once we run npm test, it does not quit the process automatically.
+and the reason for that is.. done detects if all processes are done executing and it finds that the mongodb is still running
+so once we are done executing our test cases, we disconnect to the db and then call 'done'
+
+-also, once we are done executing, delete data from the database else it might be an issue like in our case if we run the test
+again, it throws an error as user with the id already exists
