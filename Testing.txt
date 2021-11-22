@@ -98,3 +98,29 @@ so once we are done executing our test cases, we disconnect to the db and then c
 
 -also, once we are done executing, delete data from the database else it might be an issue like in our case if we run the test
 again, it throws an error as user with the id already exists
+
+Hooks:
+we have before(), after(), beforeEach(), afterEach() hooks. all this define the sequence in which code should be executed
+
+so if we have a common code that needs to be run before all test case but just once then can write common code in before hook
+so it be executed and then each 'it' function
+
+same is with after, if there is some common code that needs to be run after all test case but just once then can write it in 
+after hook so all 'it' function will be executed one by one and then after function
+
+beforeEach and afterEach is for something that we want to run individually for each test case
+
+so lets say we have 2 'it' function then the execution will be-
+- before
+-beforeEach
+- it
+-afterEach
+-beforeEach
+-it
+-afterEach
+-after
+
+these hooks can be aywhere inside describe method, their position does not matter
+can be before or after the 'it' function declaration
+
+advantage of this is.. even if any test case fails, after will be run and clear the database and disconnect it
