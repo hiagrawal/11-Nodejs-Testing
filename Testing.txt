@@ -19,3 +19,11 @@ Now Mocha is responsible for running our tests and giving us 'it' function,
 chai is responsible for defining our success conditions that is expect funtion we get from chai
 
 describe() is used to group test cases and we can have multiple describe nested in one another
+
+What not to test:
+We should not test any third party/ external packages methods or functions. They provide us the methods and they do it on their own
+we just have to test our functionality, our logic
+
+so in auth middleware, we are not supposed to test jwt verify method as it is jwt method and logic
+what we should test is.. if verify method returns success or failure and if our code works correctly
+that if decodedToken is not there then it should throw error and if it is there then it should have userid
